@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>daily_report_system</title>
+</head>
+<body>
+    <h1>日報管理システム</h1>
+    <h2>従業員情報　詳細ページ</h2>
+    <table th:object="${employee}">
+        <tr>
+            <td th:text="*{authentication.code}"></td>
+            <td th:text="*{name}"></td>
+            <td th:text="*{authentication.role}"></td>
+            <td th:text="*{#temporals.format(createdAt, 'yyyy/MM/dd HH:mm:ss')}"></td>
+
+            <!--  <td th:text="${#temporals.format(data.updatedAt, 'yyyy/MM/dd HH:mm:ss')}"></td> -->
+       </tr>
+    </table>
+            <p><a th:href="@{/}">一覧に戻る</a></p>
+            <!-- <p><a th:href="@{///////}">この従業員情報を編集する</a></p> -->
+</body>
+</html>

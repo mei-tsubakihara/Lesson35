@@ -17,6 +17,10 @@ import lombok.Data;
 @Table(name = "Authentication")
 public class Authentication {
 
+    public static enum Role {
+        一般, 管理者
+    }
+
     @Id
     @Column(length = 20, nullable = false)
     private String code;

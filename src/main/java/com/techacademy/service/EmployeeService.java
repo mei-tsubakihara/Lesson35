@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.techacademy.entity.Employee;
 import com.techacademy.repository.EmployeeRepository;
 
@@ -19,13 +21,19 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-  // 1件を検索して返す
+    // 1件を検索して返す
     public Employee getEmployee(Integer id) {
         // findByIdで検索
         Optional<Employee> option = employeeRepository.findById(id);
         // 取得できなかった場合はnullを返す
         Employee employee = option.orElse(null);
         return employee;
+    }
+
+    //登録
+    @Transactional
+    public Employee saveEmployee(Employee employee) {
+        return employeeRepository.save(employee);
     }
 
 }

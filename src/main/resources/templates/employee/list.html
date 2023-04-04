@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>daily_report_system</title>
-    <link rel="stylesheet" th:href="@{/css/EmployeeList.css}">
+    <link rel="stylesheet" th:href="@{/css/list.css}">
 </head>
 <body>
     <h1>日報管理システム</h1>
@@ -20,5 +20,6 @@
             <td><a th:href="@{detail/{id}/(id=${data.id})}">詳細を見る</a></td>
         </tr>
     </table>
+　　      <p><a th:href="@{/employee/register}">新規従業員の登録</a></p>
 </body>
 </html>

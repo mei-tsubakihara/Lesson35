@@ -30,10 +30,10 @@ public class Employee {
     private Integer delete_flag;
 
     @Column(nullable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
     @OneToOne(mappedBy="employee", cascade = CascadeType.ALL)
     private Authentication authentication;

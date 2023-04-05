@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Daily report system</title>
-
-
+    <link rel="stylesheet" th:href="@/css/update.css">
 </head>
 <body>
     <h1>日報管理システム</h1>
-    <h2>従業員　新規登録ページ</h2>
-    <form method="post" th:action="@{/employee/register}" th:object="${employee}">
-        <label for="code">社員番号</label>
+    <h2>従業員情報　編集ページ</h2>
+    <form method="post" th:action="@{/employee/update/{id}/(id=${employee.id})}" th:object="${employee}">
+     <label for="code">社員番号</label>
         <br>
         <input type="text" th:field="*{authentication.code}">
         <br>
@@ -31,6 +30,7 @@
         <br>
         <input type="submit" value="投稿">
     </form>
-    　　　　<p><a th:href="@{/employee/list}">一覧に戻る</a></p>
+        <!-- <p><a th:href="@{/}">この従業員情報を削除する</a></p> -->
+        <p><a th:href="@{/employee/list}">一覧に戻る</a></p>
 </body>
 </html>

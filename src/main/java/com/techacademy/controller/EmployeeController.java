@@ -1,5 +1,7 @@
 package com.techacademy.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +14,7 @@ import com.techacademy.entity.Employee;
 import com.techacademy.service.EmployeeService;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("employee")
 public class EmployeeController {
     private final EmployeeService service;
 
@@ -21,7 +23,7 @@ public class EmployeeController {
     }
 
     // ----- 一覧画面 -----
-    @GetMapping("/")
+    @GetMapping("/list")
     public String getList(Model model) {
         model.addAttribute("employeeList", service.getEmployeeList());
         //EmployeeList.htmlに画面遷移t
@@ -49,10 +51,22 @@ public class EmployeeController {
     // ----- 登録処理 -----
     @PostMapping("/register")
     public String postRegister(Employee employee) {
+        LocalDateTime now = LocalDateTime.now();
+        employee.setCreatedAt(now);
+        employee.setUpdatedAt(now);
+        employee.setDelete_flag(0);
+        employee.getAuthentication().setEmployee(employee);
         //登録
         service.saveEmployee(employee);
         //一覧画面にリダイレクト
-        return "redirect:/";
+        return "redirect:/employee/list";
     }
+
+     // ----- 更新画面 -----
+    @GetMapping("/update/{id}")
+    public String getEmployee(@PathVariable("id") Integer id, Model model) {
+        
+    }
+
 
 }

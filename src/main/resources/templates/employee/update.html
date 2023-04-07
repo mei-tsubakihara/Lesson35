@@ -19,7 +19,7 @@
         <br>
         <label for="password">パスワード</label>
         <br>
-        <input type="text">
+          <input type="text" th:field="*{authentication.password}">
         <br>
         <label for="role">権限</label>
         <br>
@@ -30,7 +30,7 @@
         <br>
         <input type="submit" value="投稿">
     </form>
-        <!-- <p><a th:href="@{/}">この従業員情報を削除する</a></p> -->
+        <p><a th:href="@{/employee/delete/{id}/(id=${employee.id})}">この従業員情報を削除する</a></p>
         <p><a th:href="@{/employee/list}">一覧に戻る</a></p>
 </body>
 </html>

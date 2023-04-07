@@ -28,6 +28,7 @@ public class EmployeeController {
     @GetMapping("/list")
     public String getList(Model model) {
         model.addAttribute("employeeList", service.getEmployeeList());
+        model.addAttribute("listSize", service.getEmployeeList().size());
         //EmployeeList.htmlに画面遷移t
         return "employee/list";
     }
@@ -69,6 +70,7 @@ public class EmployeeController {
     public String getEmployeeUpdate(@PathVariable("id") Integer id, Model model) {
         // codeが指定されていたら検索結果、無ければ空のオブジェクトを設定
         Employee employee = id != null ? service.getEmployee(id) : new Employee();
+        employee.getAuthentication().setPassword("");
         // Modelに登録
         model.addAttribute("employee", employee);
         // employee/update.htmlに画面遷移
@@ -90,12 +92,14 @@ public class EmployeeController {
     }
 
     // ----- 削除処理 -----
-    @PostMapping(path="list", params="deleteRun")
-    public String deleteRUn(@RequestParam(name="idck") Set<Integer> idck, Model model) {
-        //一括削除
-        service.deleteEmployee(idck);
+    @GetMapping("/delete/{id}")
+    public String getEmployeeDelete(@PathVariable("id") Integer id, Model model) {
+        // codeが指定されていたら検索結果、無ければ空のオブジェクトを設定
+        Employee employee = id != null ? service.getEmployee(id) : new Employee();
+        employee.setDelete_flag(1);
+        //登録
+        service.saveEmployee(employee);
         //一覧画面にリダイレクト
         return "redirect:/employee/list";
     }
-
 }

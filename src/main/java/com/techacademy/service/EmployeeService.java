@@ -46,13 +46,4 @@ public class EmployeeService {
         return employee;
     }
 
-    // 削除
-    @Transactional
-    public void deleteEmployee(Set<Integer> idck) {
-        for(Integer id : idck) {
-            employeeRepository.deleteById(id);
-        }
-    }
-
-
 }

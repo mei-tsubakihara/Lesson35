@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Daily report system</title>
-    <link rel="stylesheet" th:href="@/css/update.css">
+    <link rel="stylesheet" th:href="@{/css/update.css}">
 </head>
 <body>
     <h1>日報管理システム</h1>
@@ -19,7 +19,7 @@
         <br>
         <label for="password">パスワード</label>
         <br>
-        <input type="text" th:field="*{authentication.password}">
+        <input type="text">
         <br>
         <label for="role">権限</label>
         <br>

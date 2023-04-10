@@ -42,4 +42,5 @@ public class Employee {
     @OneToOne(mappedBy="employee", cascade = CascadeType.ALL)
     private Authentication authentication;
 
+    
 }

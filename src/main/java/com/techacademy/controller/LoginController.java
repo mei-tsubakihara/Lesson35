@@ -11,4 +11,11 @@ public class LoginController {
         // login.htmlに画面遷移
         return "login";
     }
+
+    @GetMapping("/index")
+    public String index() {
+        // index.htmlに画面遷移
+        return "index";
+        //トップページはindexにすることが多い
+    }
 }

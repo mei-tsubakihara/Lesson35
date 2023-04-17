@@ -16,7 +16,7 @@ public class SecurityConfig {
         http.formLogin(login -> login
             .loginProcessingUrl("/login")    // ユーザー名・パスワードの送信先
             .loginPage("/login")             // ログイン画面
-            .defaultSuccessUrl("/employee/list") // ログイン成功後のリダイレクト先
+            .defaultSuccessUrl("/index") // ログイン成功後のリダイレクト先
             .failureUrl("/login?error")      // ログイン失敗時のリダイレクト先
             .permitAll()                     // ログイン画面は未ログインでアクセス可
         ).logout(logout -> logout

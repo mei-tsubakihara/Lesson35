@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>daily_report_system</title>
+    <link rel="stylesheet" th:href="@{/css/list.css}">
+</head>
+<body>
+    <h1>日報管理システム</h1>
+
+     <form method="post" th:action="@{/logout}">
+        <input type="submit" value="ログアウト">
+    </form><br>
+        <p><a th:href="@{/employee/list}">従業員管理</a></p>
+</body>
+</html>

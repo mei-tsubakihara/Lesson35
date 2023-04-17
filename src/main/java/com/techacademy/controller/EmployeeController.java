@@ -3,8 +3,12 @@ package com.techacademy.controller;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +19,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.techacademy.entity.Employee;
 import com.techacademy.service.EmployeeService;
 
+
+
 @Controller
 @RequestMapping("employee")
 public class EmployeeController {
     private final EmployeeService service;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public EmployeeController(EmployeeService service) {
         this.service = service;
@@ -29,7 +38,7 @@ public class EmployeeController {
     public String getList(Model model) {
         model.addAttribute("employeeList", service.getEmployeeList());
         model.addAttribute("listSize", service.getEmployeeList().size());
-        //EmployeeList.htmlに画面遷移t
+        //EmployeeList.htmlに画面遷移
         return "employee/list";
     }
 
@@ -53,7 +62,13 @@ public class EmployeeController {
 
     // ----- 登録処理 -----
     @PostMapping("/register")
-    public String postRegister(Employee employee) {
+    public String postRegister(@Validated Employee employee, BindingResult res, Model model) {
+
+        if(res.hasErrors()) {
+            // エラーあり
+            return getRegister(employee);
+        }
+
         LocalDateTime now = LocalDateTime.now();
         employee.setCreatedAt(now);
         employee.setUpdatedAt(now);
@@ -85,6 +100,12 @@ public class EmployeeController {
         employee.setUpdatedAt(now);
         employee.setDelete_flag(0);
         employee.getAuthentication().setEmployee(employee);
+        employee.getAuthentication().setPassword(passwordEncoder.encode(employee.getAuthentication().getPassword()));
+        //passwordをセット→暗号化したものに登録しなおす（employeeとして登録されているものからget）
+
+        //PathVariableでidを取ってくる→47行目の処理を行う
+        //passwordがnullかnullじゃないかで分かれる→nullだったらtableのemployeeからpasswordを持ってくる/nullじゃなかったら新しいpasswordを使用する（画面から取ってくる→こちらは暗号化処理が必要）
+
         //登録
         service.saveEmployee(employee);
         //一覧画面にリダイレクト

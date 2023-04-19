@@ -1,7 +1,6 @@
 package com.techacademy.controller;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.techacademy.entity.Authentication;
 import com.techacademy.entity.Employee;
@@ -69,7 +67,8 @@ public class EmployeeController {
     @PostMapping("/register")
     public String postRegister(@Validated Employee employee, BindingResult res, Model model) {
 
-        if(res.hasErrors()) {
+        if(res.hasErrors() || employee.getAuthentication().getRole().equals("")) {
+            //@Notnullでは一般・管理者・選択されていないの3つのうち「選択されていない」を判定できない→空の場合のエラー処理を記載
             // エラーあり
             return getRegister(employee);
         }
@@ -88,6 +87,10 @@ public class EmployeeController {
         employee.setUpdatedAt(now);
         employee.setDelete_flag(0);
         employee.getAuthentication().setEmployee(employee);
+
+        String registerpassword = "";
+        registerpassword = employee.getAuthentication().getPassword();
+        employee.getAuthentication().setPassword(passwordEncoder.encode(registerpassword));
         //登録
         service.saveEmployee(employee);
         //一覧画面にリダイレクト

@@ -7,6 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
@@ -29,7 +30,7 @@ public class Authentication {
     private String password;
 
     @Column(length = 10, nullable = false)
-    @NotEmpty
+    @NotNull
     private String role;
 
     @OneToOne

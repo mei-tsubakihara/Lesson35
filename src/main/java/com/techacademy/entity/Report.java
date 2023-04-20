@@ -1,5 +1,6 @@
 package com.techacademy.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,31 +10,38 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "employee")
-@Where(clause = "delete_flag = 0")
-public class Employee {
+@Table(name = "report")
+public class Report{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(length = 20, nullable = false)
+    @Column(nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate reportDate;
+
+    @Column(length = 255, nullable = false)
     @NotEmpty
-    private String name;
+    private String title;
 
     @Column(nullable = false)
-    private Integer delete_flag;
+    @Type(type="text")
+    @NotEmpty
+    private String content;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -41,10 +49,8 @@ public class Employee {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToOne(mappedBy="employee", cascade = CascadeType.ALL)
-    private Authentication authentication;
-
-    @OneToMany(mappedBy="employee", cascade = CascadeType.ALL)
-    private List<Report> reports;
+    @ManyToOne
+    @JoinColumn(name="employee_id", referencedColumnName="id", nullable = false)
+    private Employee employee;
 
 }

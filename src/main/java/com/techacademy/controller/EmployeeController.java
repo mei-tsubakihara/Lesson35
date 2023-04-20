@@ -23,7 +23,7 @@ import com.techacademy.service.EmployeeService;
 
 @Controller
 @RequestMapping("employee")
-public class EmployeeController {
+public class EmployeeController { 
     private final EmployeeService service;
     private final AuthenticationService aservice;
     //authenticationserviceを作成→認証情報のテーブルを取得しやすくするため

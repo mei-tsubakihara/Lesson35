@@ -19,7 +19,7 @@
             <th>操作</th>
         </tr>
         <tr th:each="data : ${reportList}">
-            <td th:text="${data.name}"></td>
+            <td th:text="${data.employee.name}"></td>
             <td th:text="${data.reportDate}"></td>
             <td th:text="${data.title}"></td>
             <td><a th:href="@{detail/{id}/(id=${data.id})}">詳細を見る</a></td>

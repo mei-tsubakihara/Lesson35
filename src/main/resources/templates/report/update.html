@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Daily report system</title>
-
-
+    <link rel="stylesheet" th:href="@{/css/update.css}">
 </head>
 <body>
     <h1>日報管理システム</h1>
-    <h2>日報　新規登録ページ</h2>
-    <form method="post" th:action="@{/report/register}" th:object="${report}">
-        <label for="reportDate">日付</label>
+    <h2>日報情報　編集ページ</h2>
+    <form method="post" th:action="@{/report/update/{id}/(id=${report.employee.id})}" th:object="${report}">
+     <label for="reportDate">日付</label>
         <br>
         <input type="date" th:field="*{reportDate}">
         <br>

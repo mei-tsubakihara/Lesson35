@@ -8,10 +8,8 @@
 <body>
     <h1>日報管理システム</h1>
     <h2>日報管理システムへようこそ</h2>
+    <h3>【自分の日報一覧】</h3>
 
-     <form method="post" th:action="@{/logout}">
-        <input type="submit" value="ログアウト">
-    </form><br>
     <table>
         <tr>
             <th>氏名</th>
@@ -30,5 +28,9 @@
 
         <p><a th:href="@{/employee/list}">従業員管理</a></p>
         <p><a th:href="@{/report/list}">日報管理</a></p>
+
+     <form method="post" th:action="@{/logout}">
+        <input type="submit" value="ログアウト">
+    </form><br>
 </body>
 </html>

@@ -7,10 +7,27 @@
 </head>
 <body>
     <h1>日報管理システム</h1>
+    <h2>日報管理システムへようこそ</h2>
 
      <form method="post" th:action="@{/logout}">
         <input type="submit" value="ログアウト">
     </form><br>
+    <table>
+        <tr>
+            <th>氏名</th>
+            <th>日付</th>
+            <th>タイトル</th>
+            <th>操作</th>
+        </tr>
+        <tr th:each="data : ${reportList}">
+            <td th:text="${data.employee.name}"></td>
+            <td th:text="${data.reportDate}"></td>
+            <td th:text="${data.title}"></td>
+            <td><a th:href="@{report/detail/{id}/(id=${data.id})}">詳細を見る</a></td>
+        </tr>
+    </table>
+        <p th:text="'（ 全' + *{listSize} + '件 ）'">
+
         <p><a th:href="@{/employee/list}">従業員管理</a></p>
         <p><a th:href="@{/report/list}">日報管理</a></p>
 </body>

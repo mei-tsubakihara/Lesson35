@@ -23,7 +23,7 @@ import com.techacademy.service.EmployeeService;
 
 @Controller
 @RequestMapping("employee")
-public class EmployeeController { 
+public class EmployeeController {
     private final EmployeeService service;
     private final AuthenticationService aservice;
     //authenticationserviceを作成→認証情報のテーブルを取得しやすくするため
@@ -113,16 +113,20 @@ public class EmployeeController {
     @PostMapping("/update/{id}/")
     public String postEmployeeUpdate(Employee employee) {
         LocalDateTime now = LocalDateTime.now();
-        employee.setCreatedAt(now);
+
         employee.setUpdatedAt(now);
         employee.setDelete_flag(0);
         employee.getAuthentication().setEmployee(employee);
 
         String password = "";
         //空の変数を用意して分岐によって変数を決める
+
+        Employee tableEmployee = service.getEmployee(employee.getId());
+        //table側から従業員情報をもってくる（サービス経由）
+        employee.setCreatedAt(tableEmployee.getCreatedAt());
+
         if ( employee.getAuthentication().getPassword().equals("")) {
-            Employee tableEmployee = service.getEmployee(employee.getId());
-            //table側から従業員情報をもってくる（サービス経由）
+
             password = tableEmployee.getAuthentication().getPassword();
             employee.getAuthentication().setPassword(password);
             //登録処理で暗号化されているものをそのまま登録

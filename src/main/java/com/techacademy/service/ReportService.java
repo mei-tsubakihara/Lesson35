@@ -22,6 +22,14 @@ public class ReportService {
         return reportRepository.findAll();
     }
 
+
+    //ログインしている従業員の日報一覧をとってくるためのメソッド
+    public List<Report> getLgReportList(Employee employee){
+        return reportRepository.findByEmployee(employee);
+    }
+    //Report.javaでは、employee_idをemployeeとして定義しているので、findByのあとはEmployeeでemployee_idを取得することができる
+    //@AuthenticationPrincipalはコントローラーでしか使えない
+
     // 1件を検索して返す（登録）
     public Report getReport(Integer id) {
         // findByIdで検索

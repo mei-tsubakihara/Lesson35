@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.techacademy.entity.Employee;
 import com.techacademy.entity.Report;
 import com.techacademy.service.ReportService;
 import com.techacademy.service.UserDetail;
@@ -28,7 +26,6 @@ public class ReportController {
     private final ReportService service;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
 
     public ReportController(ReportService service) {
         this.service = service;
@@ -78,6 +75,7 @@ public class ReportController {
        report.setCreatedAt(now);
        report.setUpdatedAt(now);
        report.setEmployee(userDetail.getEmployee());
+       
 
        //登録
        service.saveReport(report);
@@ -92,7 +90,6 @@ public class ReportController {
       // codeが指定されていたら検索結果、無ければ空のオブジェクトを設定
       Report report = id != null ? service.getReport(id) : new Report();
 
-      //employee.getAuthentication().setPassword("");
       // Modelに登録
       model.addAttribute("report", report);
       // report/update.htmlに画面遷移
@@ -101,11 +98,15 @@ public class ReportController {
 
   // ----- 更新処理 -----
   @PostMapping("/update/{id}/")
-  public String postReportUpdate(Report report, @AuthenticationPrincipal UserDetail userDetail) {
+  public String postReportUpdate(@PathVariable("id") Integer id, Report report, @AuthenticationPrincipal UserDetail userDetail) {
       LocalDateTime now = LocalDateTime.now();
-      report.setCreatedAt(now);
+
       report.setUpdatedAt(now);
       report.setEmployee(userDetail.getEmployee());
+
+      Report tableReport = service.getReport(id);
+      //table側から従業員情報をもってくる（サービス経由）PathVariableで取得したidを使用してサービスをもってくる
+      report.setCreatedAt(tableReport.getCreatedAt());
 
       //登録
       service.saveReport(report);

@@ -16,7 +16,7 @@ public class SecurityConfig {
         http.formLogin(login -> login
             .loginProcessingUrl("/login")    // ユーザー名・パスワードの送信先
             .loginPage("/login")             // ログイン画面
-            .defaultSuccessUrl("/index") // ログイン成功後のリダイレクト先
+            .defaultSuccessUrl("/index", true) // ログイン成功後のリダイレクト先
             .failureUrl("/login?error")      // ログイン失敗時のリダイレクト先
             .permitAll()                     // ログイン画面は未ログインでアクセス可
         ).logout(logout -> logout
@@ -27,6 +27,12 @@ public class SecurityConfig {
             .mvcMatchers("/employee/**").hasAuthority("管理者") // 追記部分：従業員管理は管理者のみアクセス可
             .anyRequest().authenticated()    // その他はログイン必要
         );
+
+        //ログインしたときに前のページに飛ぶ仕様になっている→新規のページだと前のページがないのでindex.htmlに飛ぶ仕様（コントローラーを通さない）
+        //「/」にアクセスするとindex.htmlが実行されるようになっている→ログイン成功後のリダイレクト先は/でもindex.htmlにアクセスする
+        //trueを入れることで、/→index.htmlの動きではなく指定したurlに飛ばすことができる
+        //trueを入れたときのデメリット→前のページに飛ばなくなる→途中でコードを変えて更新すると再度ログイン→最初のページに戻ってしまう（作業中のページに戻れない）
+        //19行目を/にして、loginControllerのGetMappingを/にする方法もある
 
         return http.build();
     }

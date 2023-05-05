@@ -43,11 +43,23 @@ public class ReportController {
 
     // ----- 詳細画面 -----
     @GetMapping(value = { "/detail", "/detail/{id}/" })
-    public String getReport(@PathVariable(name = "id", required = false) Integer id, Model model) {
+    public String getReport(@PathVariable(name = "id", required = false) Integer id, Model model, @AuthenticationPrincipal UserDetail userDetail) {
         // codeが指定されていたら検索結果、無ければ空のオブジェクトを設定
         Report report = id != null ? service.getReport(id) : new Report();
+
+        int flag = 0;
+
+        if ( report.getEmployee().getId() == userDetail.getEmployee().getId()) {
+            //日報の従業員IDとログインしている従業員のIDを比較（Integerなので==）
+            flag = 1;
+        }
+
+        //idが他の従業員の情報も取ってこれるようになっている
+        //userDetailの従業員情報とidの内容を比較して、一致していれば編集可能とする→htmlでif分岐を作成
+
         // Modelに登録
         model.addAttribute("report", report);
+        model.addAttribute("flag", flag);
         // report/detail.htmlに画面遷移
         return "report/detail";
     }
@@ -68,14 +80,14 @@ public class ReportController {
 
        if(res.hasErrors()) {
            // エラーあり
-           return getRegister(report, null);
+           return "report/register";
        }
 
        LocalDateTime now = LocalDateTime.now();
        report.setCreatedAt(now);
        report.setUpdatedAt(now);
        report.setEmployee(userDetail.getEmployee());
-       
+
 
        //登録
        service.saveReport(report);
